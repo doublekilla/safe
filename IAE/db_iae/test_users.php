@@ -1,0 +1,1 @@
+"<?php\n\nrequire __DIR__.'/vendor/autoload.php';\n$app = require_once __DIR__.'/bootstrap/app.php';\n$kernel = $app->make(Illuminate\\Contracts\\Console\\Kernel::class);\n$kernel->bootstrap();\n\n$users = \\App\\Models\\User::all();\nforeach ($users as $u) {\n    echo \"ID: {$u->id}, Name: {$u->name}\\n\";\n}\n"
