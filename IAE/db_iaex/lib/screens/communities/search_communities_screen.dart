@@ -207,7 +207,11 @@ class _SearchCommunitiesScreenState extends State<SearchCommunitiesScreen> {
           return const Center(child: CircularProgressIndicator());
         }
         
+<<<<<<< HEAD
         final myList = prov.communities.where((c) => c.isJoined == true || c.joinStatus == 'pending').toList();
+=======
+        final myList = prov.communities.where((c) => c.isJoined == true).toList();
+>>>>>>> 2bf0c916ae27714e7e8ee712538323298f719d29
 
         if (myList.isEmpty) {
           return const EmptyState(
@@ -229,7 +233,10 @@ class _SearchCommunitiesScreenState extends State<SearchCommunitiesScreen> {
               memberCount: com.memberCount,
               location: com.location,
               isJoined: com.isJoined,
+<<<<<<< HEAD
               joinStatus: com.joinStatus,
+=======
+>>>>>>> 2bf0c916ae27714e7e8ee712538323298f719d29
               onTap: () => context.push('/community/${com.id}'),
               onJoin: null,
             );

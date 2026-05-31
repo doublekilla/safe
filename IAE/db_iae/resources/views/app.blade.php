@@ -11,6 +11,7 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
+<<<<<<< HEAD
         <script>
             window.onerror = function(message, source, lineno, colno, error) {
                 document.body.innerHTML = '<div style="color: red; padding: 20px;"><h1>Javascript Error</h1><p>' + message + '</p><pre>' + (error ? error.stack : '') + '</pre></div>';
@@ -20,6 +21,8 @@
             });
         </script>
 
+=======
+>>>>>>> 2bf0c916ae27714e7e8ee712538323298f719d29
         <!-- Scripts -->
         @routes
         @viteReactRefresh

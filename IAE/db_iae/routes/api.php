@@ -67,8 +67,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/feed', [SpaceLink\FeedController::class, 'index']);
     Route::post('/feed', [SpaceLink\FeedController::class, 'store']);
     Route::post('/feed/{id}/like', [SpaceLink\FeedController::class, 'toggleLike']);
+<<<<<<< HEAD
     Route::get('/feed/{id}/comments', [SpaceLink\FeedController::class, 'getComments']);
     Route::post('/feed/{id}/comments', [SpaceLink\FeedController::class, 'addComment']);
+=======
+>>>>>>> 2bf0c916ae27714e7e8ee712538323298f719d29
 
     // Friends
     Route::get('/friends', [SpaceLink\FriendController::class, 'index']);

@@ -143,6 +143,7 @@ class _CommunityDetailScreenState extends State<CommunityDetailScreen> {
                           ),
                         ),
                       ),
+<<<<<<< HEAD
                       const SizedBox(width: 8),
                       Container(
                         padding: const EdgeInsets.symmetric(
@@ -162,6 +163,8 @@ class _CommunityDetailScreenState extends State<CommunityDetailScreen> {
                           ),
                         ),
                       ),
+=======
+>>>>>>> 2bf0c916ae27714e7e8ee712538323298f719d29
                       const Spacer(),
                       const Icon(
                         Icons.people_outline_rounded,
@@ -212,7 +215,11 @@ class _CommunityDetailScreenState extends State<CommunityDetailScreen> {
                   // Action Buttons
                   Row(
                     children: [
+<<<<<<< HEAD
                       if (!com.isJoined && com.joinStatus != 'pending')
+=======
+                      if (!com.isJoined)
+>>>>>>> 2bf0c916ae27714e7e8ee712538323298f719d29
                         Expanded(
                           child: PrimaryButton(
                             label: 'Join Club',
@@ -220,6 +227,7 @@ class _CommunityDetailScreenState extends State<CommunityDetailScreen> {
                             onPressed: () => prov.joinCommunity(com.id),
                           ),
                         )
+<<<<<<< HEAD
                       else if (com.joinStatus == 'pending')
                         Expanded(
                           child: SecondaryButton(
@@ -228,6 +236,8 @@ class _CommunityDetailScreenState extends State<CommunityDetailScreen> {
                             onPressed: () {},
                           ),
                         )
+=======
+>>>>>>> 2bf0c916ae27714e7e8ee712538323298f719d29
                       else ...[
                         Expanded(
                           child: PrimaryButton(

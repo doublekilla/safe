@@ -11,7 +11,10 @@ use App\Http\Controllers\RescheduleController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\VenueController;
+<<<<<<< HEAD
 use App\Http\Controllers\CommunityController;
+=======
+>>>>>>> 2bf0c916ae27714e7e8ee712538323298f719d29
 use App\Http\Controllers\Admin;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -53,12 +56,16 @@ Route::get('/', function () {
 // Public venue browsing
 Route::get('/venues', [VenueController::class, 'index'])->name('venues.index');
 Route::get('/venues/{venue}', [VenueController::class, 'show'])->name('venues.show');
+<<<<<<< HEAD
 Route::get('/komunitas', [CommunityController::class, 'index'])->name('community.index');
 Route::get('/komunitas/semua', [CommunityController::class, 'browse'])->name('community.browse');
 Route::get('/komunitas/{id}', [CommunityController::class, 'show'])->name('community.show');
 Route::post('/komunitas/post', [CommunityController::class, 'storePost'])->name('community.post');
 Route::get('/faq', [FaqController::class, 'index'])->name('faq.index');
 Route::get('/download-app', function () { return Inertia::render('DownloadApp'); })->name('download.app');
+=======
+Route::get('/faq', [FaqController::class, 'index'])->name('faq.index');
+>>>>>>> 2bf0c916ae27714e7e8ee712538323298f719d29
 
 // API routes (public)
 Route::get('/api/schedules/available', [ScheduleController::class, 'getAvailable'])->name('schedules.available');

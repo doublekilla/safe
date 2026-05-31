@@ -43,7 +43,10 @@ export default function CustomerLayout({ children, title }) {
     const navLinks = [
         { href: '/', label: 'Beranda', icon: '🏠', routeName: 'home' },
         { href: route('venues.index'), label: 'Lapangan', icon: '🏟️', routeName: 'venues.*' },
+<<<<<<< HEAD
         { href: '/komunitas', label: 'Komunitas', icon: '🤝', routeName: 'community.*' },
+=======
+>>>>>>> 2bf0c916ae27714e7e8ee712538323298f719d29
         { href: route('faq.index'), label: 'FAQ', icon: '❓', routeName: 'faq.*' },
     ];
 
@@ -70,7 +73,11 @@ export default function CustomerLayout({ children, title }) {
                                     key={link.label}
                                     href={link.href}
                                     className={`px-3.5 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+<<<<<<< HEAD
                                         (link.routeName && typeof route !== 'undefined' && (() => { try { return route().current(link.routeName); } catch(e) { return false; } })()) || (typeof window !== 'undefined' && window.location.pathname.startsWith(link.href) && link.href !== '/') || (typeof window !== 'undefined' && window.location.pathname === '/' && link.href === '/')
+=======
+                                        route().current(link.routeName)
+>>>>>>> 2bf0c916ae27714e7e8ee712538323298f719d29
                                             ? 'text-accent bg-accent/5'
                                             : 'text-gray-600 hover:text-primary hover:bg-gray-50'
                                     }`}
@@ -229,7 +236,10 @@ export default function CustomerLayout({ children, title }) {
                             <div className="space-y-2">
                                 <Link href="/" className="block text-sm text-gray-400 hover:text-white transition-colors">Beranda</Link>
                                 <Link href={route('venues.index')} className="block text-sm text-gray-400 hover:text-white transition-colors">Lapangan</Link>
+<<<<<<< HEAD
                                 <Link href="/komunitas" className="block text-sm text-gray-400 hover:text-white transition-colors">Komunitas</Link>
+=======
+>>>>>>> 2bf0c916ae27714e7e8ee712538323298f719d29
                                 <Link href={route('faq.index')} className="block text-sm text-gray-400 hover:text-white transition-colors">FAQ</Link>
                             </div>
                         </div>
