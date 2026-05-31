@@ -31,11 +31,7 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
   @override
   void dispose() { _postController.dispose(); super.dispose(); }
 
-<<<<<<< HEAD
   bool _canPost(BuildContext context) {
-=======
-  bool _isAdmin(BuildContext context) {
->>>>>>> 2bf0c916ae27714e7e8ee712538323298f719d29
     if (widget.communityId == null) return false;
     final prov = context.read<CommunitiesProvider>();
     final com = prov.communities.where((c) => c.id == widget.communityId).firstOrNull ?? prov.selectedCommunity;
@@ -45,15 +41,10 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
     if (currentUser == null) return false;
 
     if (com.adminUserId == currentUser.id) return true;
-<<<<<<< HEAD
     if (com.isJoined) return true;
     
     final me = com.members.where((m) => m.id == currentUser.id).firstOrNull;
     return me != null;
-=======
-    final me = com.members.where((m) => m.id == currentUser.id).firstOrNull;
-    return me != null && me.role == 'admin';
->>>>>>> 2bf0c916ae27714e7e8ee712538323298f719d29
   }
 
   Future<void> _pickImage() async {
@@ -74,7 +65,6 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
     }
   }
 
-<<<<<<< HEAD
   void _showComments(BuildContext context, int postId, FeedProvider prov) {
     showModalBottomSheet(
       context: context,
@@ -86,26 +76,16 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
       },
     );
   }
-
-=======
->>>>>>> 2bf0c916ae27714e7e8ee712538323298f719d29
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(backgroundColor: AppColors.cardSurface, title: const Text('Club Feed'), leading: IconButton(icon: const Icon(Icons.arrow_back_rounded), onPressed: () => context.pop())),
       body: Consumer<FeedProvider>(builder: (context, prov, _) {
-<<<<<<< HEAD
         final canPost = _canPost(context);
         return CustomScrollView(slivers: [
           // Create post box
           if (canPost)
-=======
-        final isAdmin = _isAdmin(context);
-        return CustomScrollView(slivers: [
-          // Create post box
-          if (isAdmin)
->>>>>>> 2bf0c916ae27714e7e8ee712538323298f719d29
             SliverToBoxAdapter(child: Container(
               margin: const EdgeInsets.all(20),
               padding: const EdgeInsets.all(16),
@@ -188,7 +168,6 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
                     const SizedBox(width: 10),
                     Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                       Text(post.userName, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.textPrimary)),
-<<<<<<< HEAD
                       Builder(builder: (context) {
                         String role = 'Anggota';
                         final commProv = context.read<CommunitiesProvider>();
@@ -198,9 +177,6 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
                         }
                         return Text(role, style: const TextStyle(fontSize: 11, color: AppColors.textSecondary));
                       }),
-=======
-                      Text(post.communityName ?? '', style: const TextStyle(fontSize: 11, color: AppColors.textSecondary)),
->>>>>>> 2bf0c916ae27714e7e8ee712538323298f719d29
                     ])),
                     if (post.tag != null) Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
@@ -230,7 +206,6 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
                         Text('${post.likes}', style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)),
                       ]),
                     ),
-<<<<<<< HEAD
                     const SizedBox(width: 16),
                     GestureDetector(
                       onTap: () => _showComments(context, post.id, prov),
@@ -240,8 +215,6 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
                         Text('${post.comments}', style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)),
                       ]),
                     ),
-=======
->>>>>>> 2bf0c916ae27714e7e8ee712538323298f719d29
                     const Spacer(),
                     Text(_formatDate(post.createdAt), style: const TextStyle(fontSize: 10, color: AppColors.textMuted)),
                   ]),
@@ -253,8 +226,6 @@ class _CommunityFeedScreenState extends State<CommunityFeedScreen> {
     );
   }
 }
-<<<<<<< HEAD
-
 class _CommentsSheet extends StatefulWidget {
   final int postId;
   final FeedProvider prov;
@@ -378,6 +349,3 @@ class _CommentsSheetState extends State<_CommentsSheet> {
     );
   }
 }
-
-=======
->>>>>>> 2bf0c916ae27714e7e8ee712538323298f719d29

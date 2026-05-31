@@ -51,6 +51,20 @@ export default function VenuesIndex({ venues, filters }) {
                     </tbody>
                 </table>
             </div>
+            {/* Pagination */}
+            {venues?.links && venues.links.length > 3 && (
+                <div className="flex justify-center mt-6">
+                    <div className="flex flex-wrap gap-1">
+                        {venues.links.map((link, key) => (
+                            link.url === null ? (
+                                <div key={key} className="px-3 py-1.5 text-sm text-gray-400 border border-gray-200 rounded-md bg-gray-50" dangerouslySetInnerHTML={{ __html: link.label }} />
+                            ) : (
+                                <Link key={key} href={link.url} className={`px-3 py-1.5 text-sm border rounded-md transition-colors ${link.active ? 'bg-accent text-primary font-bold border-accent' : 'text-gray-600 border-gray-200 hover:bg-gray-50'}`} dangerouslySetInnerHTML={{ __html: link.label }} />
+                            )
+                        ))}
+                    </div>
+                </div>
+            )}
         </AdminLayout>
     );
 }

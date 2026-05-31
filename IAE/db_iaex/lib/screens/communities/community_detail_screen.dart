@@ -17,6 +17,8 @@ class CommunityDetailScreen extends StatefulWidget {
 }
 
 class _CommunityDetailScreenState extends State<CommunityDetailScreen> {
+  bool _isAboutExpanded = false;
+  bool _isRulesExpanded = false;
   @override
   void initState() {
     super.initState();
@@ -143,7 +145,6 @@ class _CommunityDetailScreenState extends State<CommunityDetailScreen> {
                           ),
                         ),
                       ),
-<<<<<<< HEAD
                       const SizedBox(width: 8),
                       Container(
                         padding: const EdgeInsets.symmetric(
@@ -163,8 +164,6 @@ class _CommunityDetailScreenState extends State<CommunityDetailScreen> {
                           ),
                         ),
                       ),
-=======
->>>>>>> 2bf0c916ae27714e7e8ee712538323298f719d29
                       const Spacer(),
                       const Icon(
                         Icons.people_outline_rounded,
@@ -215,11 +214,7 @@ class _CommunityDetailScreenState extends State<CommunityDetailScreen> {
                   // Action Buttons
                   Row(
                     children: [
-<<<<<<< HEAD
                       if (!com.isJoined && com.joinStatus != 'pending')
-=======
-                      if (!com.isJoined)
->>>>>>> 2bf0c916ae27714e7e8ee712538323298f719d29
                         Expanded(
                           child: PrimaryButton(
                             label: 'Join Club',
@@ -227,7 +222,6 @@ class _CommunityDetailScreenState extends State<CommunityDetailScreen> {
                             onPressed: () => prov.joinCommunity(com.id),
                           ),
                         )
-<<<<<<< HEAD
                       else if (com.joinStatus == 'pending')
                         Expanded(
                           child: SecondaryButton(
@@ -236,8 +230,6 @@ class _CommunityDetailScreenState extends State<CommunityDetailScreen> {
                             onPressed: () {},
                           ),
                         )
-=======
->>>>>>> 2bf0c916ae27714e7e8ee712538323298f719d29
                       else ...[
                         Expanded(
                           child: PrimaryButton(
@@ -272,12 +264,21 @@ class _CommunityDetailScreenState extends State<CommunityDetailScreen> {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  Text(
-                    com.description ?? 'No description provided.',
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: AppColors.textSecondary,
-                      height: 1.5,
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _isAboutExpanded = !_isAboutExpanded;
+                      });
+                    },
+                    child: Text(
+                      com.description ?? 'No description provided.',
+                      maxLines: _isAboutExpanded ? null : 4,
+                      overflow: _isAboutExpanded ? null : TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: AppColors.textSecondary,
+                        height: 1.5,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 32),
@@ -293,12 +294,21 @@ class _CommunityDetailScreenState extends State<CommunityDetailScreen> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    Text(
-                      com.rules!,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: AppColors.textSecondary,
-                        height: 1.5,
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _isRulesExpanded = !_isRulesExpanded;
+                        });
+                      },
+                      child: Text(
+                        com.rules!,
+                        maxLines: _isRulesExpanded ? null : 4,
+                        overflow: _isRulesExpanded ? null : TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: AppColors.textSecondary,
+                          height: 1.5,
+                        ),
                       ),
                     ),
                   ],
@@ -347,7 +357,8 @@ class _CommunityDetailScreenState extends State<CommunityDetailScreen> {
                         itemCount: com.members.length > 5 ? 5 : com.members.length,
                         separatorBuilder: (_, _) => const SizedBox(width: 16),
                         itemBuilder: (context, index) {
-                          final m = com.members[index];
+                          final sortedMembers = List.from(com.members)..sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+                          final m = sortedMembers[index];
                           return SizedBox(
                             width: 64,
                             child: Column(
@@ -432,8 +443,8 @@ class _CommunityDetailScreenState extends State<CommunityDetailScreen> {
   }
 
   void _showAllMembers(BuildContext context, List<CommunityMember> members) {
-    final admins = members.where((m) => m.role == 'admin').toList();
-    final regular = members.where((m) => m.role != 'admin').toList();
+    final admins = members.where((m) => m.role == 'admin').toList()..sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+    final regular = members.where((m) => m.role != 'admin').toList()..sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
 
     showModalBottomSheet(
       context: context,

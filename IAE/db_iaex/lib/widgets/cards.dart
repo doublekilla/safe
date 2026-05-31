@@ -16,10 +16,7 @@ class CommunityCard extends StatelessWidget {
   final String? location;
   final String? activityFrequency;
   final bool isJoined;
-<<<<<<< HEAD
   final String? joinStatus;
-=======
->>>>>>> 2bf0c916ae27714e7e8ee712538323298f719d29
   final VoidCallback? onTap;
   final VoidCallback? onJoin;
 
@@ -32,10 +29,7 @@ class CommunityCard extends StatelessWidget {
     this.location,
     this.activityFrequency,
     this.isJoined = false,
-<<<<<<< HEAD
     this.joinStatus,
-=======
->>>>>>> 2bf0c916ae27714e7e8ee712538323298f719d29
     this.onTap,
     this.onJoin,
   });
@@ -156,11 +150,7 @@ class CommunityCard extends StatelessWidget {
                 ],
               ),
             ),
-<<<<<<< HEAD
             if (!isJoined && joinStatus != 'pending' && onJoin != null)
-=======
-            if (!isJoined && onJoin != null)
->>>>>>> 2bf0c916ae27714e7e8ee712538323298f719d29
               SizedBox(
                 height: 32,
                 child: ElevatedButton(
@@ -180,7 +170,6 @@ class CommunityCard extends StatelessWidget {
                   ),
                 ),
               )
-<<<<<<< HEAD
             else if (joinStatus == 'pending')
               Container(
                 padding: const EdgeInsets.symmetric(
@@ -200,8 +189,6 @@ class CommunityCard extends StatelessWidget {
                   ),
                 ),
               )
-=======
->>>>>>> 2bf0c916ae27714e7e8ee712538323298f719d29
             else if (isJoined)
               Container(
                 padding: const EdgeInsets.symmetric(

@@ -61,20 +61,12 @@ class FeedPost {
         'text': text, 'image': image, 'tag': tag,
       };
 
-<<<<<<< HEAD
   FeedPost copyWith({int? likes, bool? isLiked, int? comments}) {
-=======
-  FeedPost copyWith({int? likes, bool? isLiked}) {
->>>>>>> 2bf0c916ae27714e7e8ee712538323298f719d29
     return FeedPost(
       id: id, userId: userId, userName: userName, userImage: userImage,
       communityId: communityId, communityName: communityName, text: text,
       image: image, tag: tag, likes: likes ?? this.likes,
-<<<<<<< HEAD
       comments: comments ?? this.comments, isLiked: isLiked ?? this.isLiked, createdAt: createdAt,
-=======
-      comments: comments, isLiked: isLiked ?? this.isLiked, createdAt: createdAt,
->>>>>>> 2bf0c916ae27714e7e8ee712538323298f719d29
     );
   }
 }

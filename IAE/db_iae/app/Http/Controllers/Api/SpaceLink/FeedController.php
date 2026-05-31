@@ -12,11 +12,7 @@ class FeedController extends Controller
     public function index(Request $request)
     {
         $query = SlFeedPost::with(['user.slProfile', 'community', 'likes'])
-<<<<<<< HEAD
             ->withCount(['likes', 'comments'])
-=======
-            ->withCount('likes')
->>>>>>> 2bf0c916ae27714e7e8ee712538323298f719d29
             ->latest();
 
         if ($request->has('community_id')) {
@@ -49,13 +45,8 @@ class FeedController extends Controller
             $community = \App\Models\SpaceLink\SlCommunity::find($request->community_id);
             if ($community && $community->admin_user_id !== $request->user()->id) {
                 $member = $community->members()->where('user_id', $request->user()->id)->first();
-<<<<<<< HEAD
                 if (!$member) {
                     return response()->json(['success' => false, 'message' => 'Hanya anggota klub yang dapat membuat postingan feed.'], 403);
-=======
-                if (!$member || $member->pivot->role !== 'admin') {
-                    return response()->json(['success' => false, 'message' => 'Hanya admin yang dapat membuat postingan feed.'], 403);
->>>>>>> 2bf0c916ae27714e7e8ee712538323298f719d29
                 }
             }
         }
@@ -100,8 +91,6 @@ class FeedController extends Controller
             ]
         ]);
     }
-<<<<<<< HEAD
-
     public function getComments(Request $request, $id)
     {
         $post = SlFeedPost::findOrFail($id);
@@ -135,6 +124,4 @@ class FeedController extends Controller
             'data' => $comment->load('user.slProfile')
         ], 201);
     }
-=======
->>>>>>> 2bf0c916ae27714e7e8ee712538323298f719d29
 }

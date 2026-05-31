@@ -74,7 +74,6 @@ class FeedProvider extends ChangeNotifier {
     );
     notifyListeners();
     // Optimistic — fire API in background
-<<<<<<< HEAD
     _api.post('/feed/$postId/like'); // Backend toggleLike handles both
   }
 
@@ -103,12 +102,5 @@ class FeedProvider extends ChangeNotifier {
       }
     } catch (_) {}
     return false;
-=======
-    if (_posts[index].isLiked) {
-      _api.post('/feed/$postId/like');
-    } else {
-      _api.post('/feed/$postId/unlike');
-    }
->>>>>>> 2bf0c916ae27714e7e8ee712538323298f719d29
   }
 }

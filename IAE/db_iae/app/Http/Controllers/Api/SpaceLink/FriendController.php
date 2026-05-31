@@ -123,7 +123,10 @@ class FriendController extends Controller
         if ($request->has('sport') && $request->sport !== 'all') {
             $sport = $request->sport;
             $usersQuery->whereHas('slProfile', function ($pq) use ($sport) {
-                $pq->whereJsonContains('favorite_sports', $sport);
+                $pq->where(function ($q) use ($sport) {
+                    $q->whereJsonContains('favorite_sports', $sport)
+                      ->orWhereJsonContains('favorite_sports', ucfirst($sport));
+                });
             });
         }
 

@@ -38,7 +38,6 @@ class SlCommunity extends Model
     {
         return $this->belongsToMany(User::class, 'sl_community_members', 'community_id', 'user_id')
             ->withPivot('role', 'joined_at')
-<<<<<<< HEAD
             ->wherePivot('role', '!=', 'pending')
             ->withTimestamps();
     }
@@ -48,8 +47,6 @@ class SlCommunity extends Model
         return $this->belongsToMany(User::class, 'sl_community_members', 'community_id', 'user_id')
             ->withPivot('role', 'joined_at')
             ->wherePivot('role', '=', 'pending')
-=======
->>>>>>> 2bf0c916ae27714e7e8ee712538323298f719d29
             ->withTimestamps();
     }
 

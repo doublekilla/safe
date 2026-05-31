@@ -25,7 +25,6 @@ class CommunityController extends Controller
         
         $userId = $request->user() ? $request->user()->id : null;
         if ($userId) {
-<<<<<<< HEAD
             $memberships = SlCommunityMember::where('user_id', $userId)->get()->keyBy('community_id');
             $communities->map(function ($community) use ($memberships) {
                 $membership = $memberships->get($community->id);
@@ -36,11 +35,6 @@ class CommunityController extends Controller
                     $community->is_joined = false;
                     $community->join_status = null;
                 }
-=======
-            $memberCommunityIds = SlCommunityMember::where('user_id', $userId)->pluck('community_id')->toArray();
-            $communities->map(function ($community) use ($memberCommunityIds) {
-                $community->is_joined = in_array($community->id, $memberCommunityIds);
->>>>>>> 2bf0c916ae27714e7e8ee712538323298f719d29
                 return $community;
             });
         }
@@ -55,12 +49,8 @@ class CommunityController extends Controller
     {
         $communities = $request->user()->slCommunities()->withCount('members')->latest()->get();
         $communities->map(function ($community) {
-<<<<<<< HEAD
             $community->is_joined = $community->pivot->role !== 'pending';
             $community->join_status = $community->pivot->role;
-=======
-            $community->is_joined = true;
->>>>>>> 2bf0c916ae27714e7e8ee712538323298f719d29
             return $community;
         });
 
@@ -76,7 +66,6 @@ class CommunityController extends Controller
         
         $userId = $request->user() ? $request->user()->id : null;
         if ($userId) {
-<<<<<<< HEAD
             $membership = SlCommunityMember::where('community_id', $id)->where('user_id', $userId)->first();
             if ($membership) {
                 $community->is_joined = $membership->role !== 'pending';
@@ -88,11 +77,6 @@ class CommunityController extends Controller
         } else {
             $community->is_joined = false;
             $community->join_status = null;
-=======
-            $community->is_joined = $community->members->contains('id', $userId);
-        } else {
-            $community->is_joined = false;
->>>>>>> 2bf0c916ae27714e7e8ee712538323298f719d29
         }
 
         return response()->json([

@@ -34,14 +34,10 @@ class SlFeedPost extends Model
         return $this->hasMany(SlFeedLike::class, 'feed_post_id');
     }
 
-<<<<<<< HEAD
     public function comments(): HasMany
     {
         return $this->hasMany(SlFeedComment::class, 'feed_post_id');
     }
-
-=======
->>>>>>> 2bf0c916ae27714e7e8ee712538323298f719d29
     /**
      * Check if a given user has liked this post.
      */

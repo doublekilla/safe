@@ -220,7 +220,6 @@ function FaqSection({ faqs }) {
 
 function CtaSection() {
     return (
-<<<<<<< HEAD
         <section className="bg-[#FFFFFF] py-16 px-4 sm:px-6 lg:px-8">
             <div className="max-w-4xl mx-auto">
                 <div className="bg-gradient-primary rounded-[24px] p-10 md:p-16 text-center shadow-xl relative overflow-hidden">
@@ -236,18 +235,6 @@ function CtaSection() {
                         Booking Sekarang 🚀
                     </Link>
                 </div>
-=======
-        <section className="py-16 bg-gradient-primary relative overflow-hidden">
-            <div className="absolute inset-0 opacity-5">
-                <div className="absolute top-0 right-0 w-96 h-96 bg-accent rounded-full blur-3xl" />
-            </div>
-            <div className="max-w-3xl mx-auto px-4 text-center relative z-10">
-                <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">Siap Main?</h2>
-                <p className="text-gray-400 text-lg mb-8">Booking lapangan sekarang dan nikmati pengalaman olahraga terbaik di EithSpace.</p>
-                <Link href={route('venues.index')} className="btn-accent btn-lg">
-                    Booking Sekarang 🚀
-                </Link>
->>>>>>> 2bf0c916ae27714e7e8ee712538323298f719d29
             </div>
         </section>
     );

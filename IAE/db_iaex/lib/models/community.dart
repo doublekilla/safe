@@ -15,10 +15,7 @@ class Community {
   final int memberCount;
   final String? activityFrequency;
   final bool isJoined;
-<<<<<<< HEAD
   final String? joinStatus;
-=======
->>>>>>> 2bf0c916ae27714e7e8ee712538323298f719d29
 
   final List<CommunityMember> members;
 
@@ -36,10 +33,7 @@ class Community {
     this.memberCount = 0,
     this.activityFrequency,
     this.isJoined = false,
-<<<<<<< HEAD
     this.joinStatus,
-=======
->>>>>>> 2bf0c916ae27714e7e8ee712538323298f719d29
     this.members = const [],
   });
 
@@ -60,10 +54,7 @@ class Community {
       memberCount: json['member_count'] is int ? json['member_count'] as int : (json['members_count'] is int ? json['members_count'] as int : int.tryParse(json['member_count']?.toString() ?? json['members_count']?.toString() ?? '') ?? 0),
       activityFrequency: json['activity_frequency'] as String?,
       isJoined: json['is_joined'] as bool? ?? false,
-<<<<<<< HEAD
       joinStatus: json['join_status'] as String?,
-=======
->>>>>>> 2bf0c916ae27714e7e8ee712538323298f719d29
       members: (json['members'] as List?)?.map((e) => CommunityMember.fromJson(e)).toList() ?? [],
     );
   }
