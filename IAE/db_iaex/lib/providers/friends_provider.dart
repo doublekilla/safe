@@ -61,6 +61,29 @@ class FriendsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Load a single user profile by ID (for viewing from RSVP list etc.)
+  Future<void> loadUserProfile(int userId) async {
+    // Check if already in friends or search results
+    final existsInFriends = _friends.any((f) => f.id == userId);
+    final existsInSearch = _searchResults.any((f) => f.id == userId);
+    if (existsInFriends || existsInSearch) return;
+
+    try {
+      final res = await _api.get('/friends/$userId');
+      if (res.isSuccess) {
+        Map<String, dynamic> jsonData;
+        if (res.data is Map && res.data['data'] is Map) {
+          jsonData = res.data['data'] as Map<String, dynamic>;
+        } else {
+          jsonData = res.data as Map<String, dynamic>;
+        }
+        final friend = SportFriend.fromJson(jsonData);
+        _searchResults = [..._searchResults, friend];
+        notifyListeners();
+      }
+    } catch (_) {}
+  }
+
   Future<bool> sendFriendRequest(int userId) async {
     try {
       final res = await _api.post('/friends/$userId/add');

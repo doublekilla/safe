@@ -180,6 +180,51 @@ class FriendController extends Controller
         ]);
     }
 
+    public function show(Request $request, $id)
+    {
+        $userId = $request->user()->id;
+        $user = User::with('slProfile')->findOrFail($id);
+        $profile = $user->slProfile;
+
+        // Get friendship status
+        $friendship = SlFriendship::where(function ($q) use ($userId, $id) {
+            $q->where('user_id', $userId)->where('friend_id', $id);
+        })->orWhere(function ($q) use ($userId, $id) {
+            $q->where('user_id', $id)->where('friend_id', $userId);
+        })->first();
+
+        // Get mutual clubs
+        $userClubIds = \App\Models\SpaceLink\SlCommunityMember::where('user_id', $id)->pluck('community_id');
+        $myClubIds = \App\Models\SpaceLink\SlCommunityMember::where('user_id', $userId)->pluck('community_id');
+        $mutualClubIds = $userClubIds->intersect($myClubIds);
+        $mutualClubs = \App\Models\SpaceLink\SlCommunity::whereIn('id', $mutualClubIds)->withCount('members')->get(['id', 'name', 'image'])->map(function($c) {
+            return [
+                'id' => $c->id,
+                'name' => $c->name,
+                'image' => $c->image ? (str_starts_with($c->image, 'http') ? $c->image : url($c->image)) : null,
+                'member_count' => $c->members_count
+            ];
+        });
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'profile_image' => $profile?->profile_image ?? $user->avatar,
+                'location' => $profile?->location,
+                'sports' => $profile?->favorite_sports ?? [],
+                'skill_level' => $profile?->skill_level,
+                'availability' => $profile?->availability ?? [],
+                'friend_status' => $friendship?->status ?? 'none',
+                'gender' => $profile?->gender,
+                'mutual_clubs' => $mutualClubs,
+                'activity_count' => $this->getActivityCount($user->id),
+            ]
+        ]);
+    }
+
     public function add(Request $request, $friendId)
     {
         if ($request->user()->id == $friendId) {

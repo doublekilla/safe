@@ -40,6 +40,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
   }
 
+  Future<void> _loginWithGoogle() async {
+    final auth = context.read<AuthProvider>();
+    final success = await auth.loginWithGoogle();
+    if (success && mounted) {
+      final user = auth.currentUser;
+      if (user != null && user.favoriteSports.isEmpty) {
+        context.go('/setup-profile');
+      } else {
+        context.go('/');
+      }
+    } else if (mounted && auth.error != null) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(auth.error!)));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
@@ -74,6 +89,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
               const SizedBox(height: 24),
               PrimaryButton(label: 'Create Account', isLoading: auth.isLoading, onPressed: _register),
               const SizedBox(height: 16),
+              SizedBox(
+                width: double.infinity, height: 52,
+                child: OutlinedButton.icon(
+                  onPressed: auth.isLoading ? null : _loginWithGoogle,
+                  icon: const Icon(Icons.g_mobiledata_rounded, size: 24),
+                  label: const Text('Continue with Google', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+                ),
+              ),
+              const SizedBox(height: 24),
               Center(child: GestureDetector(
                 onTap: () {
                   context.read<AuthProvider>().clearError();

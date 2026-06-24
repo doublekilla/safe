@@ -16,9 +16,11 @@ class CreateActivityScreen extends StatefulWidget {
 class _CreateActivityScreenState extends State<CreateActivityScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameCtl = TextEditingController();
+  final _gorCtl = TextEditingController();
   final _locationCtl = TextEditingController();
   final _dateCtl = TextEditingController();
   final _timeCtl = TextEditingController();
+  final _endTimeCtl = TextEditingController();
   final _quotaCtl = TextEditingController(text: '10');
   final _costCtl = TextEditingController(text: '0');
   final _notesCtl = TextEditingController();
@@ -28,7 +30,7 @@ class _CreateActivityScreenState extends State<CreateActivityScreen> {
   bool _connectBooking = false;
 
   @override
-  void dispose() { _nameCtl.dispose(); _locationCtl.dispose(); _dateCtl.dispose(); _timeCtl.dispose(); _quotaCtl.dispose(); _costCtl.dispose(); _notesCtl.dispose(); super.dispose(); }
+  void dispose() { _nameCtl.dispose(); _gorCtl.dispose(); _locationCtl.dispose(); _dateCtl.dispose(); _timeCtl.dispose(); _endTimeCtl.dispose(); _quotaCtl.dispose(); _costCtl.dispose(); _notesCtl.dispose(); super.dispose(); }
 
   Future<void> _pickDate() async {
     final date = await showDatePicker(context: context, firstDate: DateTime.now(), lastDate: DateTime.now().add(const Duration(days: 365)));
@@ -70,6 +72,35 @@ class _CreateActivityScreenState extends State<CreateActivityScreen> {
     }
   }
 
+  Future<void> _pickEndTime() async {
+    if (_dateCtl.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Please select a date first.')));
+      return;
+    }
+    if (_timeCtl.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Please select a start time first.')));
+      return;
+    }
+    
+    final time = await showTimePicker(context: context, initialTime: TimeOfDay.now());
+    if (time != null) {
+      final timeStr = '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
+      
+      // Validate end time is after start time
+      final startParts = _timeCtl.text.split(':');
+      final startMinutes = int.parse(startParts[0]) * 60 + int.parse(startParts[1]);
+      final endMinutes = time.hour * 60 + time.minute;
+      
+      if (endMinutes <= startMinutes) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('End time must be after start time.'), backgroundColor: Colors.red));
+        return;
+      }
+      
+      _endTimeCtl.text = timeStr;
+    }
+  }
+
   Future<void> _publish() async {
     if (!_formKey.currentState!.validate()) return;
     
@@ -88,8 +119,8 @@ class _CreateActivityScreenState extends State<CreateActivityScreen> {
     final prov = context.read<ActivitiesProvider>();
     final success = await prov.createActivity({
       'title': _nameCtl.text.trim(), 'sport_type': _sportType, 'activity_type': _activityType,
-      'location': _locationCtl.text.trim(), 'date': _dateCtl.text, 'time': _timeCtl.text,
-      'quota': int.tryParse(_quotaCtl.text) ?? 10, 'cost': double.tryParse(_costCtl.text) ?? 0,
+      'gor': _gorCtl.text.trim(), 'location': _locationCtl.text.trim(), 'date': _dateCtl.text, 'time': _timeCtl.text,
+      'end_time': _endTimeCtl.text, 'quota': int.tryParse(_quotaCtl.text) ?? 10, 'cost': double.tryParse(_costCtl.text) ?? 0,
       'skill_level': _skillLevel, 'notes': _notesCtl.text.trim(),
     });
     if (success && mounted) {
@@ -118,6 +149,9 @@ class _CreateActivityScreenState extends State<CreateActivityScreen> {
           const SizedBox(height: 6),
           Wrap(spacing: 8, runSpacing: 8, children: ActivityType.values.map((t) => CategoryChip(label: t.label, isSelected: _activityType == t.value, onTap: () => setState(() => _activityType = t.value))).toList()),
           const SizedBox(height: 14),
+          _label('Gor'),
+          TextFormField(controller: _gorCtl, decoration: const InputDecoration(hintText: 'Sports hall name (e.g. GOR Suncity)', prefixIcon: Icon(Icons.stadium_outlined, size: 20))),
+          const SizedBox(height: 14),
           _label('Location'),
           TextFormField(controller: _locationCtl, decoration: const InputDecoration(hintText: 'Venue or location name', prefixIcon: Icon(Icons.location_on_outlined, size: 20)), validator: (v) => v?.isEmpty ?? true ? 'Required' : null),
           const SizedBox(height: 14),
@@ -132,6 +166,9 @@ class _CreateActivityScreenState extends State<CreateActivityScreen> {
               TextFormField(controller: _timeCtl, readOnly: true, onTap: _pickTime, decoration: const InputDecoration(hintText: 'Select time', prefixIcon: Icon(Icons.access_time_rounded, size: 18))),
             ])),
           ]),
+          const SizedBox(height: 14),
+          _label('Waktu Selesai'),
+          TextFormField(controller: _endTimeCtl, readOnly: true, onTap: _pickEndTime, decoration: const InputDecoration(hintText: 'Select end time', prefixIcon: Icon(Icons.timer_off_outlined, size: 18))),
           const SizedBox(height: 14),
           Row(children: [
             Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

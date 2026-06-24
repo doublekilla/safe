@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import '../models/app_user.dart';
 import '../core/services/api_client.dart';
 import '../core/services/storage_service.dart';
@@ -79,7 +80,41 @@ class AuthProvider extends ChangeNotifier {
     return false;
   }
 
+  Future<bool> loginWithGoogle() async {
+    _isLoading = true;
+    _error = null;
+    notifyListeners();
+    try {
+      final gsi = GoogleSignIn.instance;
+      final googleUser = await gsi.authenticate();
 
+      final googleAuth = googleUser.authentication;
+      final idToken = googleAuth.idToken;
+      if (idToken == null) {
+        _error = 'Gagal mendapatkan token dari Google';
+        _isLoading = false;
+        notifyListeners();
+        return false;
+      }
+
+      final res = await _api.post('/auth/google', body: {'id_token': idToken}, withAuth: false);
+      if (res.isSuccess) {
+        final token = res.data['token'] as String?;
+        if (token != null) await _storage.saveToken(token);
+        _currentUser = AppUser.fromJson(res.data['user'] as Map<String, dynamic>);
+        await _storage.saveUser(jsonEncode(_currentUser!.toJson()));
+        _isLoading = false;
+        notifyListeners();
+        return true;
+      }
+      _error = res.message;
+    } catch (e) {
+      _error = e.toString();
+    }
+    _isLoading = false;
+    notifyListeners();
+    return false;
+  }
 
   Future<void> logout() async {
     try {

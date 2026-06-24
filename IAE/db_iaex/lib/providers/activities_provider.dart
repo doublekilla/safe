@@ -42,18 +42,30 @@ class ActivitiesProvider extends ChangeNotifier {
     try {
       final res = await _api.get('/activities/$id');
       if (res.isSuccess) {
+        Map<String, dynamic> jsonData;
         if (res.data is Map && res.data['data'] is Map) {
-          _selectedActivity = Activity.fromJson(res.data['data'] as Map<String, dynamic>);
+          jsonData = res.data['data'] as Map<String, dynamic>;
         } else {
-          _selectedActivity = Activity.fromJson(res.data as Map<String, dynamic>);
+          jsonData = res.data as Map<String, dynamic>;
         }
+        
+        // Debug: log gor and end_time from raw API response
+        debugPrint('[ActivityDetail] Raw JSON gor: ${jsonData['gor']} (type: ${jsonData['gor']?.runtimeType})');
+        debugPrint('[ActivityDetail] Raw JSON end_time: ${jsonData['end_time']} (type: ${jsonData['end_time']?.runtimeType})');
+        
+        _selectedActivity = Activity.fromJson(jsonData);
+        
+        debugPrint('[ActivityDetail] Parsed gor: ${_selectedActivity?.gor}');
+        debugPrint('[ActivityDetail] Parsed endTime: ${_selectedActivity?.endTime}');
         
         final index = _activities.indexWhere((a) => a.id == id);
         if (index != -1 && _selectedActivity != null) {
           _activities[index] = _selectedActivity!;
         }
       }
-    } catch (_) {}
+    } catch (e, stack) {
+      debugPrint('Load activity detail error: $e\n$stack');
+    }
     _isLoading = false;
     notifyListeners();
   }

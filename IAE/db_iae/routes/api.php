@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('auth')->group(function () {
     Route::post('/login', [SpaceLink\AuthController::class, 'login']);
     Route::post('/register', [SpaceLink\AuthController::class, 'register']);
+    Route::post('/google', [SpaceLink\AuthController::class, 'googleLogin']);
 });
 
 // ─── Authenticated Routes ───
@@ -74,6 +75,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/friends', [SpaceLink\FriendController::class, 'index']);
     Route::get('/friends/requests', [SpaceLink\FriendController::class, 'requests']);
     Route::get('/friends/search', [SpaceLink\FriendController::class, 'search']);
+    Route::get('/friends/{id}', [SpaceLink\FriendController::class, 'show']);
     Route::post('/friends/{id}/add', [SpaceLink\FriendController::class, 'add']);
     Route::post('/friends/{id}/accept', [SpaceLink\FriendController::class, 'accept']);
     Route::delete('/friends/{id}/remove', [SpaceLink\FriendController::class, 'remove']);

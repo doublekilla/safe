@@ -19,6 +19,15 @@ class FriendDetailScreen extends StatefulWidget {
 class _FriendDetailScreenState extends State<FriendDetailScreen> {
 
   @override
+  void initState() {
+    super.initState();
+    // Pre-load user profile from API if not in local lists
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<FriendsProvider>().loadUserProfile(widget.friendId);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final friend = context.select<FriendsProvider, SportFriend?>((p) {
       final inFriends = p.friends.where((f) => f.id == widget.friendId);
@@ -32,8 +41,9 @@ class _FriendDetailScreenState extends State<FriendDetailScreen> {
 
     if (friend == null) {
       return Scaffold(
+        backgroundColor: AppColors.background,
         appBar: AppBar(title: const Text('Profile'), leading: IconButton(icon: const Icon(Icons.arrow_back_rounded), onPressed: () => context.pop())),
-        body: const Center(child: Text('User not found')),
+        body: const Center(child: CircularProgressIndicator()),
       );
     }
 

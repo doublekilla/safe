@@ -8,6 +8,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -120,6 +122,76 @@ class AuthController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Password changed successfully'
+        ]);
+    }
+
+    public function googleLogin(Request $request)
+    {
+        $request->validate([
+            'id_token' => 'required|string',
+        ]);
+
+        // Verify the Google ID token
+        $response = Http::get('https://oauth2.googleapis.com/tokeninfo', [
+            'id_token' => $request->id_token,
+        ]);
+
+        if ($response->failed()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Token Google tidak valid',
+            ], 401);
+        }
+
+        $googleData = $response->json();
+        $email = $googleData['email'] ?? null;
+        $googleId = $googleData['sub'] ?? null;
+        $name = $googleData['name'] ?? $email;
+        $avatar = $googleData['picture'] ?? null;
+
+        if (!$email) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Email tidak ditemukan dari akun Google',
+            ], 422);
+        }
+
+        // Find existing user or create new one
+        $user = User::where('google_id', $googleId)
+            ->orWhere('email', $email)
+            ->first();
+
+        if ($user) {
+            if (!$user->google_id) {
+                $user->update(['google_id' => $googleId]);
+            }
+            if ($avatar && !$user->avatar) {
+                $user->update(['avatar' => $avatar]);
+            }
+        } else {
+            $user = User::create([
+                'name' => $name,
+                'email' => $email,
+                'google_id' => $googleId,
+                'avatar' => $avatar,
+                'role' => 'customer',
+                'password' => Hash::make(Str::random(24)),
+            ]);
+
+            SlUserProfile::create([
+                'user_id' => $user->id,
+            ]);
+        }
+
+        $token = $user->createToken('spacelink-mobile')->plainTextToken;
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Google login successful',
+            'data' => [
+                'token' => $token,
+                'user' => $user->load('slProfile'),
+            ],
         ]);
     }
 }

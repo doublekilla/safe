@@ -72,37 +72,34 @@ class RsvpScreen extends StatelessWidget {
     return ListView.separated(
       padding: const EdgeInsets.all(20),
       itemCount: participants.length,
-      separatorBuilder: (_, _) => const SizedBox(height: 12),
+      separatorBuilder: (context, index) => const SizedBox(height: 12),
       itemBuilder: (context, index) {
         final p = participants[index];
-        return Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: AppColors.cardSurface,
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Row(
-            children: [
-              UserAvatar(name: p.name, imageUrl: p.profileImage, size: 40),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  p.name,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textPrimary,
+        return GestureDetector(
+          onTap: () => context.push('/friend/${p.userId}'),
+          child: Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: AppColors.cardSurface,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Row(
+              children: [
+                UserAvatar(name: p.name, imageUrl: p.profileImage, size: 40),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    p.name,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.textPrimary,
+                    ),
                   ),
                 ),
-              ),
-              // IconButton(
-              //   icon: const Icon(
-              //     Icons.more_vert_rounded,
-              //     color: AppColors.textSecondary,
-              //   ),
-              //   onPressed: () {},
-              // ),
-            ],
+                const Icon(Icons.chevron_right_rounded, size: 20, color: AppColors.textSecondary),
+              ],
+            ),
           ),
         );
       },

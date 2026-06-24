@@ -35,6 +35,20 @@ class _LoginScreenState extends State<LoginScreen> {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(auth.error ?? 'Login failed')));
     }
   }
+  Future<void> _loginWithGoogle() async {
+    final auth = context.read<AuthProvider>();
+    final success = await auth.loginWithGoogle();
+    if (success && mounted) {
+      final user = auth.currentUser;
+      if (user != null && user.favoriteSports.isEmpty) {
+        context.go('/setup-profile');
+      } else {
+        context.go('/');
+      }
+    } else if (mounted && auth.error != null) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(auth.error!)));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(
                 width: double.infinity, height: 52,
                 child: OutlinedButton.icon(
-                  onPressed: () {},
+                  onPressed: auth.isLoading ? null : _loginWithGoogle,
                   icon: const Icon(Icons.g_mobiledata_rounded, size: 24),
                   label: const Text('Continue with Google', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
                 ),

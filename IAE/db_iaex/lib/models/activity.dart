@@ -4,9 +4,11 @@ class Activity {
   final String title;
   final String sportType;
   final String? activityType;
+  final String? gor;
   final String? location;
   final String? date;
   final String? time;
+  final String? endTime;
   final int quota;
   final int currentParticipants;
   final double cost;
@@ -28,9 +30,11 @@ class Activity {
     required this.title,
     required this.sportType,
     this.activityType,
+    this.gor,
     this.location,
     this.date,
     this.time,
+    this.endTime,
     this.quota = 10,
     this.currentParticipants = 0,
     this.cost = 0,
@@ -80,14 +84,16 @@ class Activity {
       id: _toInt(json['id']) ?? 0,
       title: json['title']?.toString() ?? '',
       sportType: json['sport_type']?.toString() ?? '',
-      activityType: json['activity_type']?.toString(),
-      location: json['location']?.toString(),
-      date: json['date']?.toString(),
-      time: json['time']?.toString(),
+      activityType: _toNullableString(json['activity_type']),
+      gor: _toNullableString(json['gor']),
+      location: _toNullableString(json['location']),
+      date: _toNullableString(json['date']),
+      time: _toNullableString(json['time']),
+      endTime: _toNullableString(json['end_time']),
       quota: _toInt(json['quota']) ?? 10,
       currentParticipants: _toInt(json['current_participants']) ?? 0,
       cost: parsedCost,
-      skillLevel: json['skill_level']?.toString(),
+      skillLevel: _toNullableString(json['skill_level']),
       hostUserId: _toInt(json['host_user_id']),
       hostName: (json['host'] != null && json['host'] is Map) ? json['host']['name']?.toString() : json['host_name']?.toString(),
       hostProfileImage: (json['host'] != null && json['host'] is Map) 
@@ -97,7 +103,7 @@ class Activity {
           : null,
       communityId: _toInt(json['community_id']),
       communityName: (json['community'] != null && json['community'] is Map) ? json['community']['name']?.toString() : json['community_name']?.toString(),
-      notes: json['notes']?.toString(),
+      notes: _toNullableString(json['notes']),
       status: json['status']?.toString() ?? 'available',
       confirmedParticipants: confirmed,
       waitingList: waiting,
@@ -114,10 +120,19 @@ class Activity {
     return null;
   }
 
+  /// Safely converts a dynamic JSON value to a nullable String.
+  /// Returns null if the value is null or the literal string "null".
+  static String? _toNullableString(dynamic value) {
+    if (value == null) return null;
+    final str = value.toString();
+    if (str.isEmpty || str == 'null') return null;
+    return str;
+  }
+
   Map<String, dynamic> toJson() => {
         'id': id, 'title': title, 'sport_type': sportType,
-        'activity_type': activityType, 'location': location,
-        'date': date, 'time': time, 'quota': quota,
+        'activity_type': activityType, 'gor': gor, 'location': location,
+        'date': date, 'time': time, 'end_time': endTime, 'quota': quota,
         'current_participants': currentParticipants, 'cost': cost,
         'skill_level': skillLevel, 'host_user_id': hostUserId,
         'community_id': communityId, 'notes': notes, 'status': status,
